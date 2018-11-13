@@ -1,186 +1,99 @@
-# Revisit
-Our research about customer revisit prediction.
+# Customer Revisit Prediction 
+Our research about the customer revisit prediction.
 
 > __Publication__ </br>
-> Sundong Kim and Jae-Gil Lee., "Utilizing In-Store Sensors for Revisit Prediction," *In Proc. 2018 IEEE Int'l Conf. on Data Mining (ICDM)*, Singapore, Nov 2018. [Link](http://seondong.github.io/assets/papers/2018_ICDM_Revisit.pdf) 
+> Sundong Kim and Jae-Gil Lee., "Utilizing In-Store Sensors for Revisit Prediction," *In Proc. 2018 IEEE Int'l Conf. on Data Mining (ICDM)*, Singapore, Nov 2018. [[Paper]](http://seondong.github.io/assets/papers/2018_ICDM_Revisit.pdf) [[Slide]](http://seondong.github.io/assets/papers/2018_ICDM_Revisit_slide.pdf) [[Poster]](http://seondong.github.io/assets/papers/2018_ICDM_Revisit_poster.pdf) 
 
 ## 1. Overview
 Predicting revisit intention is very important for the retail industry. Converting first-time visitors to repeating customers is of prime importance for high profitability. However, revisit analyses for offline retail businesses have been conducted on a small scale in previous studies, mainly because their methodologies have mostly relied on manually collected data. With the help of noninvasive monitoring, analyzing a customer's behavior inside stores has become possible, and revisit statistics are available from the large portion of customers who turn on their Wi-Fi or Bluetooth devices. Using Wi-Fi fingerprinting data from ZOYI, we propose a systematic framework to predict the revisit intention of customers using only signals received from their mobile devices. Using data collected from seven flagship stores in downtown Seoul, we achieved 67-80\% prediction accuracy for all customers and 64-72\% prediction accuracy for first-time visitors. The performance improvement by considering customer mobility was 4.7-24.3\%. Our framework showed a feasibility to predict revisits using customer mobility from Wi-Fi signals, that have not been considered in previous marketing studies. Toward this goal, we examine the effect of data collection period on the prediction performance and present the robustness of our model on missing customers. Finally, we discuss the difficulties of securing prediction accuracy among features that look promising but disappointed.
 
-## 2. Revisit Prediction
-I will explain the concept of revisit prediction.
+## 2. Formulating a revisit prediction task
+#### Revisit prediction
+
+>  Given a set of visits with known revisit intentions and revisit intervals, build a classifier that predicts unknown revisit intention and revisit interval for a new visit.
+
+#### Step-by-step preparation
+
+* **Collecting Wi-Fi Signals**:  For each store, we collected customer's Wi-Fi signals. It has four attributes: UID, Sensor, RSSI and Timestamp. An example of five Wi-Fi signals is as follows:
+
+| UID  | Sensor | RSSI | Timestamp         |
+| ---- | ------ | ---- | ----------------- |
+| u1   | S7     | -45  | 17-10-01 14:25:32 |
+| u1   | S7     | -49  | 17-10-01 14:25:48 |
+| u1   | S5     | -41  | 17-10-01 14:26:12 |
+| u1   | S7     | -71  | 17-10-01 14:26:17 |
+| u1   | S1     | -42  | 17-10-01 14:26:32 |
+
+* **Signal to session conversion**: Raw signals can be preprocessed into sessions. A session has four attributes: UID, Area, Dwell time and Timestamp. This data can be a basic block to construct customer's visits. In this example, the first two sessions are generated from the above five signals. Here, sensor names are directly used as the area name. However, various semantic areas can be used depending on the available information.
+
+| UID  | Area | Dwell time (sec) | Timestamp         |
+| ---- | ---- | ---------------- | ----------------- |
+| u1   | S7   | 40               | 17-10-01 14:25:32 |
+| u1   | S5   | 20               | 17-10-01 14:25:48 |
+| u1   | S7   | 135              | 17-10-09 17:42:16 |
+| u1   | S4   | 5                | 17-10-09 17:44:31 |
+| u1   | S1   | 20               | 17-10-19 17:44:36 |
+
+* **Grouping sessions into a trajectory**: A set of sessions form a trajectory if the sessions are generated from the same visit.  The first two sessions from UID u1 form a trajectory t1 with S7→S5, and the last three sessions form a next trajectory t2 with S7→S4→S1.
+
+* **Generating labels**: Using trajectories, we can define two revisit labels - RV_days and RV_bin. RV_days describes the revisit interval between the current visit and the next visit. RV_bin is the binary transformation of RV_days. To make a label for a past visit, information of next visit is required. Depending on your purpose, you can give a variation to these labels by set the threshold of customer revisit (e.g., 180-days). Below tables illustrates revisit labels with customer trajectories. In this example, we consider a threshold of 180-days.
+
+| TID  | UID  | Trajectory        | Visit date | RV_days  | RV_bin  |
+| ---- | ---- | :---------------- | ---------- | -------- | ------- |
+| t1   | u1   | S7→S5             | 17-10-01   | 8 days   | True    |
+| t2   | u1   | S7→S4→S1          | 17-10-09   | 148 days | True    |
+| t3   | u1   | S7→S1→S2→ ... →S5 | 18-03-05   | Inf      | Unknown |
+| t4   | u2   | S7→S5             | 17-10-02   | 419 days | False   |
+| t5   | u2   | S7                | 18-11-24   | Inf      | Unknown |
+
+* **Predictive Analytics**: By separating data into a train and a test set, we finally set up our revisit prediction task.
 
 ## 3. Dataset
-We are negotiating whether we can disclose the data.
 
-## 4. Preprocessing
+We are negotiating to release some datasets for research communities.
+After we get the permission, we will prepare benchmark in-store mobility datasets for revisit prediction. 
 
-## 5. Feature Engineering
+<!---
+| Name                  | Store A  | Store B  |
+| --------------------- | -------- | -------- |
+| Collection length     | 360 days | 360 days |
+| \# of sensors         | 14       | 11       |
+| \# of unique visitors | 1,000    | 1,000    |
+| Avg revisit rate      | 21.22%   | 32.98%   |
 
-## 6. How to run
+## 4. How to run
 
-## 7. Tutorial
+* Compile
 
-## 8. Reproducibility
+  * Check parameters
 
+    ```
+        -i : the hdfs file/dir path for input data set.
+        -o : the local file path to write the meta result of clustering (e.g., # of (sub-)cells, # of points for each cluster).
+        -np : the total number of cpu cores or partitions which you want to set.
+        -rho : the approximation parameter
+        -dim : the number of dimensions.
+        -minPts : the minimum number of neighbor points.
+        -eps : the radius of a neighborhood.
+    ```
 
+* Preprocess
 
-<!-- ## 2. Algorithms
-- DBSCAN [1] 
-- SPARK-DBSCAN [2] 
-- ESP-DBSCAN [3] 
-- RBP-DBSCAN [4] 
-- CBP-DBSCAN [2] 
-- NG-DBSCAN [6] 
-- __*RP-DBSCAN*__ : Spark implementation of our algorithm
+## 5. Tutorial
 
->__*Reference*__</br>
-[1] Martin Ester, Hans-Peter Kriegel, J¨org Sander, and Xiaowei Xu. 1996. A Density-Based Algorithm for Discovering Clusters in Large Spatial Databases with Noise. *In Proc. 2nd Int’l Conf. on Knowledge Discovery and Data Mining*. 226–231.</br>
-[2] Yaobin He, Haoyu Tan, Wuman Luo, Shengzhong Feng, and Jianping Fan. 2014. MR-DBSCAN: A Scalable MapReduce-based DBSCAN Algorithm for Heavily Skewed Data. *Frontiers of Computer Science* 8, 1 (2014), 83–99.</br>
-[3] Irving Cordova and Teng-Sheng Moh. 2015. DBSCAN on Resilient Distributed Datasets. *In Proc. 2015 Int’l Conf. on High Performance Computing & Simulation*. 531–540.</br>
-[4] Bi-Ru Dai and I-Chang Lin. 2012. Efficient Map/Reduce-Based DBSCAN Algorithm with Optimized Data Partition. *In Proc. 2012 IEEE Int’l Conf. on Cloud Computing*. 59–66.</br>
-[5] Alessandro Lulli, Matteo Dell’Amico, Pietro Michiardi, and Laura Ricci. 2016. NG-DBSCAN: Scalable Density-Based Clustering for Arbitrary Data. *Proceedings of the VLDB Endowment* 10, 3 (2016), 157–168.
+* We will upload some tutorials in \notebooks directory. 
 
-## 3. Data Sets
-| Name           | # Object       | # Dim    | Size    | Type  |  Link   |
-| :------------: | :------------: | :------: |:-------:|:-----:|:-------:|
-| GeoLife        | 24,876,978     | 3        | 808 MB  | float | [link](http://www.microsoft.com/en-us/download/) |
-| Cosmo50        | 315,086,245    | 3        | 11.2 GB | float | [link](http://nuage.cs.washington.edu/benchmark/astro-nbody/) |
-| OpenStreetMap  | 2,770,238,904  | 2        | 77.1 GB | float | [link](http://blog.openstreetmap.org/2012/04/01/bulk-gps-point-data/) |
-| TeraClickLog   | 4,373,472,329  | 13       | 362 GB  | float | [link](http://labs.criteo.com/downloads/download-terabyte-click-logs/) |
+  --->
 
-## 4. Configuration
- - We conducted experiments on 12 Microsoft Azure D12v2 instances loacted in South Korea. 
- - Each instance has four cores, 28GB of main memory, and 200GB of disk (SSD). 
- - All instances run on Ubuntu 16.04.3 LTS. We used Spark 2.1.0 for distributed parallel processing. 
- - Ten out of 12 instances were used as worker nodes, and the remaining two instances were used as master nodes. 
- - RP-DBSCAN algorithm was written in the Java programming language and run on JDK 1.8.0_131.
+## Reference 
 
-## 5. How to run
-- Compile
-  - Download the spark library from [Apache Spark](http://spark.apache.org/downloads.html).
-  - Add the spark library to your java project with the source code in [RP_DBSCAN](RP_DBSCAN) folder.
-  - Make a _jar file_ using IDE tools. For example, you can easily make it using Eclipse through *project name->export->jar file*. It is possible that you just download the jar file in [Jar](Jar) folder.
-- Create _Azure HDInsight_ instances
-  - Refer to [HDInsight Document](https://docs.microsoft.com/en-us/azure/hdinsight/).
-- Move the data sets into the _HDFS_
-  - Download all data sets from the above links and move them to the _Azure master node_.
-  - Transfer your data sets from the _Azure master node_ into _HDFS_.</br>
-   ```
-    hdfs dfs -put localPathForInputData hdfsPathForInputData
-   ```
-- Run **RP-DBSCAN** algorithm
-  - Necessary algorithm parameters
-   ```
-    -i : the hdfs file/dir path for input data set.
-    -o : the local file path to write the meta result of clustering (e.g., # of (sub-)cells, # of points for each cluster).
-    -np : the total number of cpu cores or partitions which you want to set.
-    -rho : the approximation parameter
-    -dim : the number of dimensions.
-    -minPts : the minimum number of neighbor points.
-    -eps : the radius of a neighborhood.
-   ```
-  - Optional algorithm parameters
-   ```
-    -bs : the block size for virtually combining two-level cell dictionary (default : 1).");
-    -l : the hdfs dir path to write labeled points, <point id, cluster label>, (default : no output).");
-   ```  
-  - Execution commend
-   ```
-    spark-submit --class mainClass jarFile -i hdfsInputPath -o localOutputPath -np numOfPartitions -rho rhoValue -dim numOfDimensions -eps epsilonValue -minPts minPtsValue
-   ```
- 
-## 6. Tutorial
-- Synthetic data set (in [DataSet](Example/DataSet) folder)
-
- | Name           | # Object       | # Dim    | Size    | Type  | 
- | :------------: | :------------: | :------: |:-------:|:-----:|
- | Chameleon      | 100,000        | 2        | 2.67 MB | float | 
-
-<img src="Example/Image/chameleon_input.png" width="250"> 
-
-- Spark parameter tunning in [MainDriver.java](RP_DBSCAN/src/dm/kaist/main/MainDriver.java)
-
- ```
- // You should set proper spark configurations considering your distributed processing environment.
- // e.g., the number of instances = 5
- //       the number of cores in each executor = 4
- //       the size of executor memory = 20g
- //       the size of driver memory = 10g
- //       the size of heap memory = 2g
- 
- (line 39) SparkConf sparkConf = Conf.setSparkConfiguration("5", "4", "20g", "10g", "2048");
- ```
-
-- Commends
+If you find our model useful, please consider citing our work.
 
 ```
- // Move chameleon data set from local disk into HDFS.
- hdfs dfs -put chameleon.ds /chameleon.ds
- 
- // Run RP-DBSCAN on chameleon data set (without writing labeled points).
- spark-submit --class dm.kaist.main.MainDriver RP_DBSCAN.jar -i addressOfHDFS/chameleon.ds -o output.txt -np 20 -rho 0.01 -dim 2 -eps 0.02 -minPts 180
- 
- // Run RP-DBSCAN on chameleon data set (with writing labeled points).
- // labeled points are written in HDFS
- // When data size is extremly large, this writing can take a long time.
- spark-submit --class dm.kaist.main.MainDriver RP_DBSCAN.jar -i addressOfHDFS/chameleon.ds -o output.txt -np 20 -rho 0.01 -dim 2 -eps 0.02 -minPts 180 -l labeledOutput
- 
- // Get labeledOutput directory from HDFS into current directory
- hdfs dfs -get labeledOutput .
+@inproceedings{kim2018icdm,
+  author    = {Sundong Kim and Jae-Gil Lee},
+  title     = {Utilizing In-Store Sensors for Revisit Prediction},
+  booktitle = {Proceedings of the IEEE International Conference on Data Mining},
+  year      = {2018},
+}
 ```
- 
-- Example of output.txt
-
-```
--i : wasb://dmcluster@dmclusterstorage.blob.core.windows.net/chameleon.ds
--o : output.txt
--np : 20
--rho : 0.01
--dim : 2
--eps : 0.02
--minPts : 180
--bs : 1
--l : labeledOutput 
-
-The number of cells : 2684
-The number of sub-cells : 73020
-The number of sub-dictionaries : 1
-The number of core points : 85894
-
-The number of clusters : 6
-Cluster 1 : 19956
-Cluster 2 : 22621
-Cluster 3 : 12103
-Cluster 4 : 20795
-Cluster 5 : 8189
-Cluster 6 : 8203
-
-Total elapsed time : 18.127s
- 
-```
- 
-- Example of a file in labeledOutput directory
- 
-```
-Pid Label
-15169 5
-20272 5
-59512 5
-96722 1
-74315 1
-...
-
-```
-
-- Plotting of the clustering result
-  - The source code for generating _R_input.txt_ to plot the clustering result is in [Plotting](Plotting) folder.
-  - plotting commend using R.
-  
-  ```
-  result <- read.table("C:/R_input.txt", sep=" ")
-  plot(result$V2,result$V3, col=result$V4, cex = 0.5)
-  ```
-  
-  <img src="Example/Image/chameleon_result.png" width="250"> 
- -->
