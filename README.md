@@ -47,7 +47,7 @@ Predicting revisit intention is very important for the retail industry. Converti
   | t5   | u2   | S7                | 18-11-24   | Inf      | Unknown |
 
 * **Predictive Analytics**: By separating data into a train and a test set, we finally set up our revisit prediction task.
-  ![Prediction Framework](./figures/prediction_framework.png)
+  ![Prediction Framework](./ICDM2018/figures/prediction_framework.png)
 
 ## 3. Dataset
 
