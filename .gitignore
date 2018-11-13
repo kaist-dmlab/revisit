@@ -1,6 +1,5 @@
 data/
 notebook_prepare_open_dataset/
-ICDM2018/
 code/
 .ipynb_checkpoints/
 .gitignore
