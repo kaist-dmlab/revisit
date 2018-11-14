@@ -8,11 +8,11 @@ Our research about the customer revisit prediction.
 Predicting revisit intention is very important for the retail industry. Converting first-time visitors to repeating customers is of prime importance for high profitability. However, revisit analyses for offline retail businesses have been conducted on a small scale in previous studies, mainly because their methodologies have mostly relied on manually collected data. With the help of noninvasive monitoring, analyzing a customer's behavior inside stores has become possible, and revisit statistics are available from the large portion of customers who turn on their Wi-Fi or Bluetooth devices. Using Wi-Fi fingerprinting data from ZOYI, we propose a systematic framework to predict the revisit intention of customers using only signals received from their mobile devices. Using data collected from seven flagship stores in downtown Seoul, we achieved 67-80\% prediction accuracy for all customers and 64-72\% prediction accuracy for first-time visitors. The performance improvement by considering customer mobility was 4.7-24.3\%. Our framework showed a feasibility to predict revisits using customer mobility from Wi-Fi signals, that have not been considered in previous marketing studies. Toward this goal, we examine the effect of data collection period on the prediction performance and present the robustness of our model on missing customers. Finally, we discuss the difficulties of securing prediction accuracy among features that look promising but disappointed.
 
 ## 2. Formulating a revisit prediction task
-#### Revisit prediction
+### Revisit prediction
 
 >  Given a set of visits with known revisit intentions and revisit intervals, build a classifier that predicts unknown revisit intention and revisit interval for a new visit.
 
-#### Step-by-step preparation
+### Step-by-step preparation
 
 * **Collecting Wi-Fi Signals**:  For each store, we collected customer's Wi-Fi signals. It has four attributes: UID, Sensor, RSSI and Timestamp. An example of five Wi-Fi signals is as follows:
 
@@ -51,8 +51,28 @@ Predicting revisit intention is very important for the retail industry. Converti
 
 ## 3. Dataset
 
-We are negotiating to release some datasets for research communities.
-After we get the permission, we will prepare benchmark in-store mobility datasets for revisit prediction. 
+We are negotiating to release benchmark in-store mobility datasets for revisit prediction.
+After we get the permission, we will upload the prepared datasets. Stay tuned.
+
+### Sample datasets
+Sample datasets of two stores can be found in [data_sample/indoor](./data_sample/indoor) directory.
+For each store, we randomly selected 500 users from the benchmark datasets.
+The time span of benchmark datasets is 1-year, we separated first 6 months data as train set and the rest as test set.
+Some customers(wifi_id) of the test set do not exist in the training set. In the test set, we only retain a single visit for each customer.
+Datasets for each store consists of train/test_labels, train/test_visits and corresponding Wi-Fi sessions data.
+
+Attributes of each dataset are as follows:
+* train/test_labels.tsv: visit_id, revisit_interval(days), revisit_intention(binary)
+* train/test_visits.tsv: visit_id, wifi_id, date, indices(=trajectory) 
+* wifi_sessions.tsv: index, wifi_id, ts, area, dwell_time(seconds)
+
+
+
+
+
+
+
+
 
 
 
