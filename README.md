@@ -36,7 +36,7 @@ Predicting revisit intention is very important for the retail industry. Converti
 
 * **Grouping sessions into a trajectory**: A set of sessions form a trajectory if the sessions are generated from the same visit.  The first two sessions from UID u1 form a trajectory t1 with S7→S5, and the last three sessions form a next trajectory t2 with S7→S4→S1.
 
-* **Generating labels**: Using trajectories, we can define two revisit labels - RV_days and RV_bin. RV_days describes the revisit interval between the current visit and the next visit. RV_bin is the binary transformation of RV_days. To make a label for a past visit, information of next visit is required. Depending on your purpose, you can give a variation to these labels by set the threshold of customer revisit (e.g., 180-days). Below tables illustrates revisit labels with customer trajectories. In this example, we consider a threshold of 180-days.
+* **Generating labels**: Using trajectories, we can define two revisit labels - RV_days and RV_bin. RV_days describes the revisit interval between the current visit and the next visit. RV_bin is the binary transformation of RV_days. To make a label for a past visit, information of next visit is required. Depending on your purpose, you can give a variation to these labels by setting the threshold of customer revisit (e.g., 180-days). Below tables illustrates revisit labels with customer trajectories. In this example, we consider a threshold of 180-days.
 
   | TID  | UID  | Trajectory        | Visit date | RV_days  | RV_bin  |
   | ---- | ---- | :---------------- | ---------- | -------- | ------- |
@@ -56,13 +56,13 @@ After we get the permission, we will upload the prepared datasets. Stay tuned.
 ### Sample datasets
 Sample datasets of two stores can be found in [data_sample/indoor](./data_sample/indoor) directory.
 Each sample dataset includes randomly selected 500 users from the�unpublished benchmark dataset of each store.
-Time span of the benchmark dataset is one year, from Jan 1, 2017 to Dec 31, 2017. 
-We separated first 6 months of data as a train set and the rest as a test set.
+A time span of the benchmark dataset is one year, from Jan 1, 2017, to Dec 31, 2017. 
+We devide the first 6 months of data as a train set and the rest as a test set.
 Some customers(wifi_id) of the test set do not exist in the training set. 
 In the train set, each wifi_id can have multiple visits if the customer is a frequent visitor. 
 However, in the test set, we only retain the first visit for each customer during the time period.
 
-Datasets for each store consists of train/test_labels, train/test_visits and corresponding Wi-Fi sessions data.
+Datasets for each store consists of train/test_labels, train/test_visits, and corresponding Wi-Fi sessions data.
 
 Attributes of each dataset are as follows:
 * train/test_labels.tsv: visit_id, revisit_interval(days), revisit_intention(binary)
