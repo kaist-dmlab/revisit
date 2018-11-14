@@ -50,15 +50,18 @@ Predicting revisit intention is very important for the retail industry. Converti
   ![Prediction Framework](./ICDM2018/figures/prediction_framework.png)
 
 ## 3. Dataset
-
 We are negotiating to release benchmark in-store mobility datasets for revisit prediction.
 After we get the permission, we will upload the prepared datasets. Stay tuned.
 
 ### Sample datasets
 Sample datasets of two stores can be found in [data_sample/indoor](./data_sample/indoor) directory.
-For each store, we randomly selected 500 users from the benchmark datasets.
-The time span of benchmark datasets is 1-year, we separated first 6 months data as train set and the rest as test set.
-Some customers(wifi_id) of the test set do not exist in the training set. In the test set, we only retain a single visit for each customer.
+Each sample dataset includes randomly selected 500 users from theãunpublished benchmark dataset of each store.
+Time span of the benchmark dataset is one year, from Jan 1, 2017 to Dec 31, 2017. 
+We separated first 6 months of data as a train set and the rest as a test set.
+Some customers(wifi_id) of the test set do not exist in the training set. 
+In the train set, each wifi_id can have multiple visits if the customer is a frequent visitor. 
+However, in the test set, we only retain the first visit for each customer during the time period.
+
 Datasets for each store consists of train/test_labels, train/test_visits and corresponding Wi-Fi sessions data.
 
 Attributes of each dataset are as follows:
@@ -110,7 +113,7 @@ Attributes of each dataset are as follows:
 
 ## Reference 
 
-If you find our model useful, please consider citing our work.
+If you find this page useful, please consider citing our work.
 
 ```
 @inproceedings{kim2018icdm,
