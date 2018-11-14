@@ -34,19 +34,20 @@ Predicting revisit intention is very important for the retail industry. Converti
   | u1   | S4   | 5                | 17-10-09 17:44:31 |
   | u1   | S1   | 20               | 17-10-19 17:44:36 |
 
-* **Grouping sessions into a trajectory**: A set of sessions form a trajectory if the sessions are generated from the same visit.  The first two sessions from UID u1 form a trajectory t1 with S7→S5, and the last three sessions form a next trajectory t2 with S7→S4→S1.
+* **Grouping sessions into a trajectory**: A set of sessions form a trajectory if the sessions are generated from the same visit.  The first two sessions from UID u1 form a trajectory t1 with S7-S5, and the last three sessions form a next trajectory t2 with S7-S4-S1.
 
 * **Generating labels**: Using trajectories, we can define two revisit labels - RV_days and RV_bin. RV_days describes the revisit interval between the current visit and the next visit. RV_bin is the binary transformation of RV_days. To make a label for a past visit, information of next visit is required. Depending on your purpose, you can give a variation to these labels by setting the threshold of customer revisit (e.g., 180-days). Below tables illustrates revisit labels with customer trajectories. In this example, we consider a threshold of 180-days.
 
   | TID  | UID  | Trajectory        | Visit date | RV_days  | RV_bin  |
   | ---- | ---- | :---------------- | ---------- | -------- | ------- |
-  | t1   | u1   | S7→S5             | 17-10-01   | 8 days   | True    |
-  | t2   | u1   | S7→S4→S1          | 17-10-09   | 148 days | True    |
-  | t3   | u1   | S7→S1→S2→ ... →S5 | 18-03-05   | Inf      | Unknown |
-  | t4   | u2   | S7→S5             | 17-10-02   | 419 days | False   |
+  | t1   | u1   | S7-S5             | 17-10-01   | 8 days   | True    |
+  | t2   | u1   | S7-S4-S1          | 17-10-09   | 148 days | True    |
+  | t3   | u1   | S7-S1-S2- ... -S5 | 18-03-05   | Inf      | Unknown |
+  | t4   | u2   | S7-S5             | 17-10-02   | 419 days | False   |
   | t5   | u2   | S7                | 18-11-24   | Inf      | Unknown |
 
 * **Predictive Analytics**: By separating data into a train and a test set, we finally set up our revisit prediction task.
+
   ![Prediction Framework](./ICDM2018/figures/prediction_framework.png)
 
 ## 3. Dataset
@@ -55,7 +56,7 @@ After we get the permission, we will upload the prepared datasets. Stay tuned.
 
 ### Sample datasets
 Sample datasets of two stores can be found in [data_sample/indoor](./data_sample/indoor) directory.
-Each sample dataset includes randomly selected 500 users from the�unpublished benchmark dataset of each store.
+Each sample dataset includes randomly selected 500 users from the?npublished benchmark dataset of each store.
 A time span of the benchmark dataset is one year, from Jan 1, 2017, to Dec 31, 2017. 
 We devide the first 6 months of data as a train set and the rest as a test set.
 Some customers(wifi_id) of the test set do not exist in the training set. 
