@@ -56,7 +56,7 @@ After we get the permission, we will upload the prepared datasets. Stay tuned.
 
 ### Sample datasets
 Sample datasets of two stores can be found in [data_sample/indoor](./data_sample/indoor) directory.
-Each sample dataset includes randomly selected 500 users from the?npublished benchmark dataset of each store.
+Each sample dataset includes randomly selected 500 users from the unpublished benchmark dataset of each store.
 A time span of the benchmark dataset is one year, from Jan 1, 2017, to Dec 31, 2017. 
 We devide the first 6 months of data as a train set and the rest as a test set.
 Some customers(wifi_id) of the test set do not exist in the training set. 
