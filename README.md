@@ -55,7 +55,7 @@ We are negotiating to release benchmark in-store mobility datasets for revisit p
 After we get the permission, we will upload the prepared datasets. Stay tuned.
 
 ### Sample datasets
-Sample datasets of two stores can be found in [data_sample/indoor](./data_sample/indoor) directory.
+We uploaded two tiny sample datasets in [data_sample/indoor](./data_sample/indoor) directory.
 Each sample dataset includes randomly selected 500 users from the unpublished benchmark dataset of each store.
 A time span of the benchmark dataset is one year, from Jan 1, 2017, to Dec 31, 2017. 
 We devide the first 6 months of data as a train set and the rest as a test set.
@@ -71,13 +71,11 @@ Attributes of each dataset are as follows:
 * wifi_sessions.tsv: index, wifi_id, ts, area, dwell_time(seconds)
 
 
+## 4. Tutorials
 
+Please have a look at our [tutorials](./tutorials), you will be able to start your project quickly.
 
-
-
-
-
-
+We will also clean up our code and upload to the repository as time permits.
 
 
 <!---
