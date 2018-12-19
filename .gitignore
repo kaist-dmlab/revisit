@@ -1,5 +1,6 @@
 data/
 data_raw/
+notebook/
 notebook_prepare_open_dataset/
 code/
 .ipynb_checkpoints/
