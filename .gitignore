@@ -4,3 +4,5 @@ notebook_prepare_open_dataset/
 code/
 .ipynb_checkpoints/
 .gitignore
+tutorials/T2-*
+tutorials/untit*
