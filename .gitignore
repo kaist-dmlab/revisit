@@ -5,5 +5,5 @@ notebook_prepare_open_dataset/
 code/
 .ipynb_checkpoints/
 .gitignore
-tutorials/T2-*
-tutorials/untit*
+tutorials/T2-Multi-level-attention-RNN.ipynb
+tutorials/Untitled.ipynb
